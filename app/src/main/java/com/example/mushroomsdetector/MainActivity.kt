@@ -3,10 +3,10 @@ package com.example.mushroomsdetector
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import com.example.mushroomsdetector.fragments.MainFragment
 
 
@@ -22,9 +22,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestCameraPermissions()
-        mainFragment = MainFragment(supportFragmentManager.beginTransaction())
+        mainFragment = MainFragment(createTransaction())
         loadMainFragment()
     }
+
+    private fun createTransaction() : FragmentTransaction =
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.slide_in, R.anim.slide_out)
 
     private fun loadMainFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -44,7 +49,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        mainFragment.setNewTransaction(supportFragmentManager.beginTransaction())
+        mainFragment.setNewTransaction(createTransaction())
+        mainFragment.enableButton()
     }
 
     override fun onRequestPermissionsResult(

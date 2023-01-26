@@ -29,6 +29,8 @@ import java.io.ByteArrayOutputStream
 
 class MainFragment(var fragmentTransaction: FragmentTransaction) : Fragment() {
 
+    private lateinit var button: Button
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +42,7 @@ class MainFragment(var fragmentTransaction: FragmentTransaction) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button = view.findViewById<Button>(R.id.button)
+        button = view.findViewById(R.id.button)
 
         button.setOnClickListener {
             makePhoto()
@@ -67,6 +69,7 @@ class MainFragment(var fragmentTransaction: FragmentTransaction) : Fragment() {
     }
 
     private fun sendImageToRecognize(encodedImage: String) {
+        button.isEnabled = false
         Common.retrofitService.sendPictureForRecognize(Picture(encodedImage)).enqueue(object :
             Callback<Prediction> {
             override fun onResponse(call: Call<Prediction>, response: Response<Prediction>) {
@@ -74,14 +77,20 @@ class MainFragment(var fragmentTransaction: FragmentTransaction) : Fragment() {
                     loadResultFragment(response.body()!!, encodedImage)
                 } else {
                     Toast.makeText(requireContext(), "Empty mushroom name", Toast.LENGTH_SHORT).show()
+                    enableButton()
                 }
             }
 
             override fun onFailure(call: Call<Prediction>, t: Throwable) {
                 Toast.makeText(requireContext(), "Server does not response", Toast.LENGTH_SHORT).show()
+                enableButton()
             }
 
         })
+    }
+
+    fun enableButton() {
+        button.isEnabled = true
     }
 
     fun setNewTransaction(fragmentTransaction: FragmentTransaction) {

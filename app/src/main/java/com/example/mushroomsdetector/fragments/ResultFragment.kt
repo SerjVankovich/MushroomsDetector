@@ -3,7 +3,6 @@ package com.example.mushroomsdetector.fragments
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Base64.URL_SAFE
 import android.util.Base64.decode
@@ -69,7 +68,8 @@ class ResultFragment(var prediction: Prediction, var encodedImage: String) : Fra
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 if (response.isSuccessful) {
                     setMushroomPhoto(response.body())
-                    recyclerView.adapter = ImageAdapter(response.body()!!)
+                    val photos = response.body()!!
+                    recyclerView.adapter = ImageAdapter(photos.subList(1, photos.size))
                     progressBar1.visibility = View.GONE
                     progressBar2.visibility = View.GONE
                 } else {

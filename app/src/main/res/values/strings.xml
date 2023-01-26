@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">MushroomsDetector</string>
+    <string name="app_name">Mushrooms Detector</string>
     <string name="what_mushroom_are_you">Какой ты гриб?</string>
     <string name="prediction_template">Нейросеть предсказала, что вы…</string>
     <string name="picture_btn">Сфоткать</string>
-    <string name="probability_template">С вероятностью </string>
+    <string name="probability_template">c вероятностью </string>
 </resources>
